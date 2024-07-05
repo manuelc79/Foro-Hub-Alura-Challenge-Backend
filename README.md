@@ -39,6 +39,8 @@ Servicio de autenticación/autorización para restringir el acceso a la informac
 - GitHub
 - InteliJ Idea
 - Trello
+- Postman
+- Insomnia
 
 ## Tablas Utilizadas 
 
@@ -65,7 +67,7 @@ Está dividido en dos rutas: /user y /login. Estos endpoints no solicitan autent
 - Registrar un nuevo usuario: Método POST en la URL localhost:8080/user, en el cuerpo del JSON debe enviar:
   - nombre
   - email
-  - password
+  - password: Deberá ingresar de 8 a 12 caracteres, al menos: un número, una letra mayúscula y una letra minúscula, acepta caracteres especiales pero no es obligatorio 
   
   Estos campos son obligatorios, en caso de recibir alguno en blanco o nulo retorna un mensaje de error informando cuáles son los campos faltantes. También verifica si el email no está repetido dentro de la base de datos, en caso afirmativo también informa sobre este inconveniente. Una vez generado el nuevo usuario retorna un mensaje de éxito.
 

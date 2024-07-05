@@ -4,8 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import foro.desafio.alura_challenge.API.Rest.AluForo.domain.usuario.Usuario;
+import foro.desafio.alura_challenge.API.Rest.AluForo.infra.excepciones.TokenHasExpiredException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,6 @@ public class TokenService {
                     .withClaim("id", usuario.getId())
                     .withExpiresAt(generarFechaDeExpiracion())
                     .sign(algorithm);
-            System.out.println(token); // eliminar despues de Debuguear
             return token;
         } catch (JWTCreationException exception){
             throw new RuntimeException();
@@ -37,28 +38,23 @@ public class TokenService {
     }
 
     public String getSubject(String token) {
-
         if (token == null){
             throw new RuntimeException();
         }
-        System.out.println(token);
         DecodedJWT verifier = null;
         try {
-            System.out.println("ApiSecret: " + apiSecret);
             Algorithm algorithm = Algorithm.HMAC256(apiSecret); // Validando firma
-            System.out.println("Algoritmo: "+ algorithm);
             verifier = JWT.require(algorithm)
                     .withIssuer("Foro Alura")
                     .build()
                     .verify(token);
-            System.out.println("Verificador: " + verifier.getSubject());
             verifier.getSubject();
 
         } catch (JWTVerificationException exception) {
-            System.out.println(exception.toString());
+            throw new TokenHasExpiredException("El token ha expirado");
         }
-        if (verifier == null) { //.getSubject()
-            throw new RuntimeException("Verificación Invalida");
+        if (verifier == null) {
+            throw new TokenHasExpiredException("Verificación Invalida");
         }
         return  verifier.getSubject();
     }

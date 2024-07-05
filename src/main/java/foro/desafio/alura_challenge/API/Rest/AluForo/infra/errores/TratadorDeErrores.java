@@ -2,20 +2,18 @@ package foro.desafio.alura_challenge.API.Rest.AluForo.infra.errores;
 
 
 import foro.desafio.alura_challenge.API.Rest.AluForo.infra.excepciones.EmailAlreadyExistsException;
+import foro.desafio.alura_challenge.API.Rest.AluForo.infra.excepciones.InvalidPasswordException;
+import foro.desafio.alura_challenge.API.Rest.AluForo.infra.excepciones.TokenHasExpiredException;
+import foro.desafio.alura_challenge.API.Rest.AluForo.infra.excepciones.UsuarioNoEncontradoException;
 import jakarta.validation.ValidationException;
 import org.hibernate.action.internal.EntityActionVetoException;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class TratadorDeErrores {
@@ -47,6 +45,21 @@ public class TratadorDeErrores {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity errorHandlerEmailYaExiste(EmailAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(UsuarioNoEncontradoException.class)
+    public ResponseEntity<?> manejarUsuarioNoEncontrado(UsuarioNoEncontradoException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<?> manejarInvalidPassword(InvalidPasswordException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(TokenHasExpiredException.class)
+    public ResponseEntity<?> handleTokenHasExpiredException(TokenHasExpiredException e){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 
     private record DatosErrorValidacion(String campo, String Error) {

@@ -1,6 +1,7 @@
 package foro.desafio.alura_challenge.API.Rest.AluForo.infra.security;
 
 import foro.desafio.alura_challenge.API.Rest.AluForo.domain.usuario.UsuarioRepository;
+import foro.desafio.alura_challenge.API.Rest.AluForo.infra.excepciones.UsuarioNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,10 @@ public class AutenticationService implements UserDetailsService{
 
    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepository.findByEmail(username);
+       var userMail = usuarioRepository.findByEmail(username);
+       if (userMail != null) {
+           return userMail;
+       }
+       throw new UsuarioNoEncontradoException("Usuario inexistente");
     }
 }
