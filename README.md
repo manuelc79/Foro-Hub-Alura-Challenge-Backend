@@ -104,7 +104,7 @@ Datos que recibe:
 
 Todos los datos son obligatorios, y son validados por el sistema, por defecto se asigna el valor false a campo estado. Además verifica que el título y el mensaje no estén duplicados en la base de datos.
 
-### Metodo GET en URL localhost:8080/topicos
+### Método GET en URL localhost:8080/topicos
 Devuelve los siguientes datos:
 - id
 - titulo
@@ -114,3 +114,23 @@ Devuelve los siguientes datos:
 - curso: nombre del curso
 
 Por defecto se lista todos los tópicos ordenados por fecha de creación en orden ascendente
+
+### Método GET en URL localhost:8080/topico/{id}
+Muestra los tópicos de usuario reterminado por {id}
+
+### Método GET en URL localhost:8080/topico/curso/{curso_id}
+Muestra los tópicos de un curso en particular determinado por {curso_id}
+
+### Método GET en URL localhost:8080/topico/year/{year}
+Muestra los tópicos de un año determinado por {year}
+
+### Método PUT en URL localgost:8080/topico
+Permite modificar el título y/o el mensaje de un tópico, los datos que recibe la ruta es:
+- id: La aplicación verifica si existe el tópico, cuando no lo encuentra envía el correspondiente mensaje de error.
+- titulo: Si está vacío no se modifica el titulo del tópico
+- mensaje: Si está vacío no se modifica el mensaje del tópico
+
+Si los ambos campos estás vacíos envía un mensaje indicando que no se ha recibido datos para modificar el tópico.
+
+### Método DELETE en URL localhost:8080/topico/{id}
+Busca el tópico {id} y realiza una eliminación del tópico, en caso de no encontrar el {id} envía un mensaje de error.

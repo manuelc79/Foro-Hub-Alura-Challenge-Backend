@@ -87,4 +87,11 @@ public class TopicoService {
         topico.actualizarTopico(datosActualizarTopico);
         return topico;
     }
+
+    public void eliminaTopico(Long id) {
+        if (!topicoRepository.existsById(id)) {
+            throw new UsuarioNoEncontradoException("Tópico inexistente");
+        }
+        topicoRepository.deleteById(id);
+    }
 }

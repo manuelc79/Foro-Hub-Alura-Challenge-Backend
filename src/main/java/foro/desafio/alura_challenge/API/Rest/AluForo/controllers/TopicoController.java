@@ -76,8 +76,8 @@ public class TopicoController {
         return ResponseEntity.ok(response.getContent());
     }
 
-    @GetMapping("/anio/{year}")
-    @Operation(summary = "Lista los topicos de un determinado año")
+    @GetMapping("/year/{year}")
+    @Operation(summary = "Lista los tópicos de un determinado año")
     public ResponseEntity mostrarPorAnio(@PathVariable @Valid Integer year, @PageableDefault(size = 10) Pageable paginacion) {
 
         var response = topicoService.listarTopicosPorAnio(year, paginacion);
@@ -88,8 +88,17 @@ public class TopicoController {
     @Transactional
     @Operation(summary = "Modifica un tópico")
     public ResponseEntity modificarTopico(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
-        var response =  topicoService.modificaTopico(datosActualizarTopico);
-        return ResponseEntity.ok(response);
+        topicoService.modificaTopico(datosActualizarTopico);
+        return ResponseEntity.ok().body("Tópico modificado exitosamente");
+    }
+
+    @DeleteMapping
+    @Transactional
+    @Operation(summary = "Eliminación lógica de un tópico")
+    public ResponseEntity eliminarTopico(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
+        topicoService.eliminaTopico(datosActualizarTopico.id());
+
+        return ResponseEntity.ok().body("Tópico eliminado correctamente");
     }
 
 
