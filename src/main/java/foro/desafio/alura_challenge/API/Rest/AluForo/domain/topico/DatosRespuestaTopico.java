@@ -7,7 +7,7 @@ public record DatosRespuestaTopico(
         String titulo,
         String mensaje,
         LocalDateTime fecha_creacion,
-        Integer estado,
+        Boolean estado,
         String autor,
         String curso) {
 

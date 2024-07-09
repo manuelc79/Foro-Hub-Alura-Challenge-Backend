@@ -4,6 +4,7 @@ import foro.desafio.alura_challenge.API.Rest.AluForo.domain.usuario.DatosAutenti
 import foro.desafio.alura_challenge.API.Rest.AluForo.domain.usuario.Usuario;
 import foro.desafio.alura_challenge.API.Rest.AluForo.infra.security.DatosJWTToken;
 import foro.desafio.alura_challenge.API.Rest.AluForo.infra.security.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping
+    @Operation(summary = "Inicio de cesión del usuario ")
     public ResponseEntity autenticarUsuario(@RequestBody @Valid DatosAutenticacionUsuario datosAutenticacionUsuario) {
         if (datosAutenticacionUsuario.email() == null || datosAutenticacionUsuario.email().isEmpty()) {
             return ResponseEntity.badRequest().body("El campo email no debe estar vacío");

@@ -2,8 +2,8 @@ package foro.desafio.alura_challenge.API.Rest.AluForo.domain.topico;
 
 import foro.desafio.alura_challenge.API.Rest.AluForo.domain.curso.Curso;
 import foro.desafio.alura_challenge.API.Rest.AluForo.domain.usuario.Usuario;
+import foro.desafio.alura_challenge.API.Rest.AluForo.infra.errores.ValidacionDeIntegridad;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -23,7 +23,8 @@ public class Topico {
     @Column(unique = true)
     private String mensaje;
     private LocalDateTime fecha_creacion;
-    private Integer estado;
+    @Column(columnDefinition = "TINYINT")
+    private Boolean estado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor_id")
@@ -37,22 +38,23 @@ public class Topico {
         this.titulo = titulo;
         this.mensaje = mensaje;
         this.fecha_creacion = LocalDateTime.now();
-        this.estado = 0;
+        this.estado = false;
         this.autor = autor;
         this.curso = curso;
     }
 
     public void actualizarTopico(DatosActualizarTopico datosActualizarTopico) {
-        if (datosActualizarTopico.titulo() != null) {
+
+        if (!datosActualizarTopico.titulo().isEmpty()) {
             this.titulo = datosActualizarTopico.titulo();
         }
-        if (datosActualizarTopico.mensaje() != null) {
+        if (!datosActualizarTopico.mensaje().isEmpty()) {
             this.mensaje = datosActualizarTopico.mensaje();
         }
     }
 
-    public void serEstado(){
-        this.estado = (estado + 1) % 2;
+    public void setEstado(){
+        this.estado = !estado;
     }
 
 

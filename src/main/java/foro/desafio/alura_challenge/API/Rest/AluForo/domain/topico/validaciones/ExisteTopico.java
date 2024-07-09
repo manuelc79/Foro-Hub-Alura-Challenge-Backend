@@ -14,10 +14,13 @@ public class ExisteTopico implements ValidaTopico{
 
     @Override
     public void validarTopico(DatosRegistroTopico datos) {
-        var existeTitulo = topicoRepository.buscarDuplicado(datos.titulo(), datos.mensaje());
-        System.out.println("Existe Titulo?: " + existeTitulo);
+        var existeTitulo = topicoRepository.findAllByTitulo(datos.titulo());
+        var existeMensaje = topicoRepository.findAllByMensaje(datos.mensaje());
         if (existeTitulo != null){
-            throw new ValidationException("Ya existe un topico con ese Titulo y/o Mensaje");
+            throw new ValidationException("Ya existe un topico con ese Titulo");
+        }
+        if (existeMensaje != null){
+            throw new ValidationException("Ya existe un topico con ese Mensaje");
         }
     }
 }

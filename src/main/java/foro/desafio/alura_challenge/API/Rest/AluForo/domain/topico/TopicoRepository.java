@@ -7,19 +7,40 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 @Repository
 public interface TopicoRepository extends JpaRepository<Topico, Long> {
-    @Query("""
-            SELECT t FROM Topico t
-            WHERE t.titulo = :titulo
-            AND
-            t.mensaje = :mensaje
-            """)
-    Topico buscarDuplicado(String titulo, String mensaje);
 
-    Page <Topico> findAllByCurso(Curso curso, Pageable paginacion);
+    Topico findAllByTitulo(String titulo);
+
+    Topico findAllByMensaje (String mensaje);
+
+    Page <Topico> findAllByCurso(String curso, Pageable paginacion);
 
     Page <Topico> findAllByEstadoTrue(Pageable paginacion);
 
     Page<Topico> findAllByEstadoFalse(Pageable paginacion);
+
+
+    @Query("""
+            SELECT t FROM Topico t
+            ORDER BY t.fecha_creacion
+            """)
+    Page<Topico> listarOrdenadosPorFecha(Pageable paginacion);
+
+    @Query("""
+            SELECT t FROM Topico t
+            WHERE t.autor.id = :userId
+            """)
+    Page<Topico> findByAutorId(Long userId, Pageable paginacion);
+
+    Page<Topico> findByCursoId(Long cursoId, Pageable paginacion);
+
+    @Query("""
+            SELECT t FROM Topico t
+            WHERE YEAR(t.fecha_creacion) = :year
+            """)
+    Page<Topico> findAllByYear(Integer year, Pageable paginacion);
 }

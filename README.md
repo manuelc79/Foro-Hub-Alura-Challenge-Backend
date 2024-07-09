@@ -8,7 +8,7 @@ Un foro es un espacio donde todos los participantes de una plataforma pueden pla
 
 Ya sabemos para qué sirve el foro y conocemos su aspecto, pero ¿sabemos cómo funciona detrás de escena? Es decir, ¿dónde se almacenan las informaciones? ¿Cómo se tratan los datos para relacionar un tópico con una respuesta, o cómo se relacionan los usuarios con las respuestas de un tópico?
 
-Este es nuestro desafío, llamado ForoHub Alura: en él, vamos a replicar este proceso a nivel de back end y, para eso, crearemos una API REST usando Spring.
+Este es nuestro desafío, llamado ForoHub Alura: en él, vamos a replicar este proceso a nivel de back end y, para eso crearemos una API REST usando Spring.
 
 # Funcionalidades de la API
 La API debe permitir a los usuarios:
@@ -53,10 +53,10 @@ Servicio de autenticación/autorización para restringir el acceso a la informac
 ## Configuración
 Cuando descargue o clone este repositorio, primero debe crear una base de datos en MySQL llamada alura_foro_api. Después debe configurar las siguientes variables de entorno en su sistema:
 
-- ${DB_HOST} : Por defecto localhost
-- ${DB_NAME} : Nombre de la base de datos
-- ${DB_USER} : El usuario definido en MySQL
-- ${DB_PASS]: Contraseña definida en MySQL
+- ${DB_HOST}: Por defecto localhost
+- ${DB_NAME}: Nombre de la base de datos
+- ${DB_USER}: El usuario definido en MySQL
+- ${DB_PASS}: Contraseña definida en MySQL
 
 ## Desarrollo de cada Controlador
 
@@ -77,5 +77,40 @@ Está dividido en dos rutas: /user y /login. Estos endpoints no solicitan autent
   
   Estos campos son obligatorios, en caso de recibir alguno en blanco o vacío retorna un mensaje de error indicando cuál es el dato faltante. La API busca el email en el sistema y si no lo encuentra retorna un mensaje indicando dicho inconveniente, en caso positivo verifica que la contraseña brindada sea la correcta, de lo contrario informa el error. Una vez validados los datos, genera y retorna el TOKEN que será utilizado para autorizar el resto de las tareas concernientes del Foro Hub.
 
+- Modificación de contraseña: La validación de login se hace mediante TOKEN, si el toquen es válido permite modificar la contraseña
+(falta filtrar cuando el token expiró)
+
+### Controladores de Tópicos
+
+Ruta: /topicos: El usuario debe estar autenticado mediante TOKEN para poder utilizar los metodos de esta ruta
+
+Detales de la tabla "topicos":
+
+titulo: Almacena el título del tópico.
+mensaje: Cuerpo del tópico.
+fecha_creacion: Fecha y hora en la que fué creado el tópico, generado en forma automatica por el sistema.
+estado: Identifica si el tópico fue resuelta o no.
+autor: Nombre del autor del tópico.
+curso: Curso al cual hace referencia el tópico.
+
+### Método POST en URL localhost:8080/topicos, se debe enviar los siguientes campos
+
+Datos que recibe:
+- titulo
+- mensaje
+- autor
+- curso
 
 
+Todos los datos son obligatorios, y son validados por el sistema, por defecto se asigna el valor false a campo estado. Además verifica que el título y el mensaje no estén duplicados en la base de datos.
+
+### Metodo GET en URL localhost:8080/topicos
+Devuelve los siguientes datos:
+- id
+- titulo
+- mensaje
+- estado
+- autor: nombre del autor
+- curso: nombre del curso
+
+Por defecto se lista todos los tópicos ordenados por fecha de creación en orden ascendente
