@@ -136,4 +136,4 @@ Si los ambos campos estás vacíos envía un mensaje indicando que no se ha reci
 Busca el tópico {id} y realiza una eliminación del tópico, en caso de no encontrar el {id} envía un mensaje de error.
 
 
-<img alt="Certificado recibido al terminar el curso de Spring" src="../img/Badge-Spring.png" title="Certificado Alura"/>
+<img alt="Certificado recibido al terminar el curso de Spring" src="/img/Badge-Spring.png" title="Certificado Alura"/>
